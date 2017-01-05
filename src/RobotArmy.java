@@ -51,12 +51,12 @@ class Human {
 /**
  * Robot Class
  */
-class Robot {
+class Robot2 {
 	boolean isEvil;
 	String name;
 	int Strength;
 	
-	public Robot(String name, boolean isEvil, int Strength){
+	public Robot2(String name, boolean isEvil, int Strength){
 		this.name = name;
 		this.isEvil = isEvil;
 		this.Strength = Strength;
