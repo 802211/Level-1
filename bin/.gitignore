@@ -22,6 +22,7 @@
 /up arrow 2.png
 /wind.wav
 /BookOfIllusions.class
+/Casino.class
 /Cat.class
 /CelebrityGuessingGame.class
 /ChuckleClicker.class
@@ -63,6 +64,7 @@
 /SeaCreatureRunner.class
 /SensitiveKeyboard.class
 /SimonSays.class
+/SlotMachine.class
 /Smurf.class
 /Song$1.class
 /Song.class
@@ -74,5 +76,6 @@
 /X_BugsGridWorld.class
 /cowTimer.class
 /houses.class
-/Casino.class
-/SlotMachine.class
+/ChangeNumber.class
+/SimplePainter.class
+/SimplePainter$Dot.class
