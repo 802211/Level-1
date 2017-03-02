@@ -56,5 +56,8 @@ public class Menu {
 		b.addActionListener(controller);
 		
 	}
-	
+	String returntTFText(){
+		String d = tf.getText();
+		return d;
+	}
 }

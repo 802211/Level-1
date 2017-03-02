@@ -1,16 +1,21 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 public class MenuController implements ActionListener{
 
 	Menu m;
 	MenuData md;
+
 	
 	MenuController(Menu m, MenuData md){
 		this.m = m;
 		this.md = md;
 		setup();
 		m.addListener(this);
+		JOptionPane.showMessageDialog(null, "Hi, what would you like to order today?");
+		
 		}
 	
 	void setup(){
@@ -37,7 +42,8 @@ public class MenuController implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("hi");
-		
+	 md.checkMenu(m.returntTFText());
+
 	}
 	
 }

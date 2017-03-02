@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 
 public class MenuData {
 
@@ -22,8 +23,32 @@ public class MenuData {
 	String getMenuItem5(){
 		return menuItem5;
 	}
-
+/*	if(tf.getText() == "Pizza"){
+			JOptionPane.showMessageDialog(null, "Your pizza is served.");
+		}*/
 	
+	void checkMenu (String Order){
 	
+		if(Order.equals("Pizza")){
+			JOptionPane.showMessageDialog(null, "Your pizza is served. Please have $500 ready and $50 tip.");
+		}
+		else if(Order.equals("Chicken")){
+			JOptionPane.showMessageDialog(null, "Your Chicken is served. Please have $550 ready and $50 tip.");
+		}
+		else if(Order.equals("Fried Spider")){
+			JOptionPane.showMessageDialog(null, "Your Fried Spider is served. Please have $900 ready and $50 tip.");
+		}
+		else if(Order.equals("Burrito")){
+			JOptionPane.showMessageDialog(null, "Your Burrito is served. Please have $650 ready and $50 tip.");
+		}
+		else if(Order.equals("Steak")){
+			JOptionPane.showMessageDialog(null, "Your Steak is served. Please have $600 ready and $50 tip.");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "That item is not on the menu, $1,000 service fee.");
+		}
+	
+	//return Order;	
+	}
 	
 }
