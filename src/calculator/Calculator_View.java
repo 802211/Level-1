@@ -60,10 +60,32 @@ public class Calculator_View {
 	p.add(b15);
 	p.add(b16);
 	
+	
 	f.setVisible(true);
 	f.setSize(500, 500);
 	p.setLayout(new GridLayout (5,4));
 	}
+	Calculator_Controller cc2;
+	
+	void actionlisteners(Calculator_Controller cc2){
+		b1.addActionListener(cc2);
+		b2.addActionListener(cc2);
+		b3.addActionListener(cc2);
+		b4.addActionListener(cc2);
+		b5.addActionListener(cc2);
+		b6.addActionListener(cc2);
+		b7.addActionListener(cc2);
+		b8.addActionListener(cc2);
+		b9.addActionListener(cc2);
+		b10.addActionListener(cc2);
+		b11.addActionListener(cc2);
+		b12.addActionListener(cc2);
+		b13.addActionListener(cc2);
+		b14.addActionListener(cc2);
+		b15.addActionListener(cc2);
+		b16.addActionListener(cc2);
+	}
+	
 	void textSet(){
 		b1.setText("7");
 		b2.setText("8");
