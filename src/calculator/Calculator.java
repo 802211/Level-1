@@ -6,8 +6,8 @@ public class Calculator {
 	
 	public static void main(String[] args) {
 	
-		Calculator_View cv = new Calculator_View();
 		Calculator_model cm = new Calculator_model();
+		Calculator_View cv = new Calculator_View(cm);
 		Calculator_Controller cc = new Calculator_Controller(cv,cm);
 		
 		

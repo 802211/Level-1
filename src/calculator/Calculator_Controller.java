@@ -25,6 +25,9 @@ JButton b1 = (JButton)(e.getSource());
 	String text = b1.getText();
 	System.out.println("buttn pressed "+ text);
 	cm.addADigit(text);
+
+	cv.update();
+
 }
 
 }

@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 public class Calculator_View {
 
+
 	
 		JFrame f = new JFrame();
 		JPanel p = new JPanel();
@@ -32,9 +33,18 @@ public class Calculator_View {
 		JLabel l2 = new JLabel();
 		JLabel l3 = new JLabel();
 		JLabel l4 = new JLabel();
-		Calculator_View(){
+		private Calculator_model cm;
+		Calculator_View(Calculator_model cm){
+			this.cm = cm;
 			add();
 			textSet();
+		}
+		
+		void update(){
+			l1.setText(cm.getFirstNum());
+			l2.setText(cm.getOperator());
+			l3.setText(cm.getSecondNum());
+			l4.setText(cm.getAnswer());
 		}
 		
 	void add(){
