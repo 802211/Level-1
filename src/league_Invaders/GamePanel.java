@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font start;
 	Font instructions;
 	Rocketship r = new Rocketship(250, 700, 50, 50);
+	ObjectManager om = new ObjectManager();
 
 	GamePanel() {
 		t = new Timer(1000 / 60, this);
@@ -24,6 +25,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		start = new Font("Arial", Font.PLAIN, 25);
 		instructions = new Font("Arial", Font.PLAIN, 25);
+		om.addObject(r);
 	}
 
 	final int MENU_STATE = 0;
@@ -36,7 +38,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateGameState() {
-		r.update();
+		om.update();
+		om.manageEnemies();
+		om.checkCollision();
 	}
 
 	void updateEndState() {
@@ -60,7 +64,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		r.draw(g);
+		om.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
@@ -111,32 +115,40 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("hi pressed");
+		//System.out.println("hi pressed");
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			currentState = currentState + 1;
 			if (currentState > END_STATE) {
 				currentState = MENU_STATE;
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_UP){
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			r.up = true;
-		//	System.out.println("up");
+			// System.out.println("up");
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN){
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			r.down = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT){
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			r.left = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			r.right = true;
+		}
+		if(e.getKeyCode()==KeyEvent.VK_SPACE){
+		/*	Projectiles p = new Projectiles(r.x, r.y, 10, 10);*/
+			om.addObject(new Projectiles(r.x + 22, r.y + 22, 10, 10));
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("hi released");
+		//System.out.println("hi released");
+		r.up = false;
+		r.down = false;
+		r.left = false;
+		r.right = false;
 	}
 
 }

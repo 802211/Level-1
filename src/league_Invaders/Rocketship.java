@@ -11,14 +11,13 @@ public class Rocketship extends GameObject {
 	boolean right;
 
 	Rocketship(int x, int y, int w, int h) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+super(x,y,w,h);
+		
 		speed = 5;
 	}
 
 	void update() {
+		super.update();
 		if (up) {
 			y = y - speed;
 		}
