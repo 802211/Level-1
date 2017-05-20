@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -16,6 +19,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font titleFont;
 	Font start;
 	Font instructions;
+	Font gameOver;
+	Font score;
+	public static BufferedImage alienImg;
+	public static BufferedImage rocketImg;
+	public static BufferedImage bulletImg;
+
 	Rocketship r = new Rocketship(250, 700, 50, 50);
 	ObjectManager om = new ObjectManager();
 
@@ -25,7 +34,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		start = new Font("Arial", Font.PLAIN, 25);
 		instructions = new Font("Arial", Font.PLAIN, 25);
+		gameOver = new Font("Arial", Font.BOLD, 48);
+		score = new Font("Arial", Font.PLAIN, 25);
 		om.addObject(r);
+		try {
+			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
+			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
+			bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	final int MENU_STATE = 0;
@@ -41,6 +61,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		om.update();
 		om.manageEnemies();
 		om.checkCollision();
+		if (r.isAlive == false) {
+			currentState = END_STATE;
+			om.reset();
+			System.out.println("hi");
+			r = new Rocketship(250, 700, 50, 50);
+			om.addObject(r);
+		}
+		om.getScore();
+
 	}
 
 	void updateEndState() {
@@ -70,7 +99,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawEndState(Graphics g) {
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-
+		g.setColor(Color.yellow);
+		g.setFont(gameOver);
+		g.drawString("GAME OVER", 100, 300);
+		g.setColor(Color.yellow);
+		g.setFont(score);
+		g.drawString("" + om.getScore() + " aliens killed", 180, 400);
 	}
 
 	void startGame() {
@@ -115,7 +149,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//System.out.println("hi pressed");
+		// System.out.println("hi pressed");
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			currentState = currentState + 1;
 			if (currentState > END_STATE) {
@@ -135,16 +169,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			r.right = true;
 		}
-		if(e.getKeyCode()==KeyEvent.VK_SPACE){
-		/*	Projectiles p = new Projectiles(r.x, r.y, 10, 10);*/
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			/* Projectiles p = new Projectiles(r.x, r.y, 10, 10); */
 			om.addObject(new Projectiles(r.x + 22, r.y + 22, 10, 10));
+		}
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			om.addObject(new Projectiles(r.x, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 10, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 20, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 30, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 40, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 50, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 60, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 70, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 80, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 90, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 100, r.y + 22, 10, 10));
+			om.addObject(new Projectiles(r.x + 110, r.y + 22, 10, 10));
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//System.out.println("hi released");
+		// System.out.println("hi released");
 		r.up = false;
 		r.down = false;
 		r.left = false;
