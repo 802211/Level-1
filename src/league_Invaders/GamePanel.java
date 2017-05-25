@@ -8,11 +8,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer t;
@@ -21,9 +27,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font instructions;
 	Font gameOver;
 	Font score;
+	int finalScore;
+	int specialPower;
 	public static BufferedImage alienImg;
 	public static BufferedImage rocketImg;
 	public static BufferedImage bulletImg;
+	Song S2 = new Song("ding.mp3");
+	Song S1 = new Song("longLazer.mp3");
 
 	Rocketship r = new Rocketship(250, 700, 50, 50);
 	ObjectManager om = new ObjectManager();
@@ -37,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		gameOver = new Font("Arial", Font.BOLD, 48);
 		score = new Font("Arial", Font.PLAIN, 25);
 		om.addObject(r);
+
 		try {
 			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
 			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
@@ -54,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 
 	void updateMenuState() {
-
+		
 	}
 
 	void updateGameState() {
@@ -68,7 +79,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			r = new Rocketship(250, 700, 50, 50);
 			om.addObject(r);
 		}
-		om.getScore();
+		finalScore = om.getScore();
+		finalScore = finalScore - specialPower;
 
 	}
 
@@ -87,7 +99,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Press ENTER to start", 115, 300);
 		g.setFont(instructions);
 		g.setColor(Color.WHITE);
-		g.drawString("Press SPACE for instructions", 75, 400);
+		g.drawString("Press SPACE to fire", 115, 400);
+		g.setFont(instructions);
+		g.setColor(Color.WHITE);
+		g.drawString("Press d to fire to make game easier", 50, 500);
 	}
 
 	void drawGameState(Graphics g) {
@@ -171,9 +186,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			/* Projectiles p = new Projectiles(r.x, r.y, 10, 10); */
+			S2.play();
 			om.addObject(new Projectiles(r.x + 22, r.y + 22, 10, 10));
 		}
 		if (e.getKeyCode() == KeyEvent.VK_D) {
+			S1.play();
 			om.addObject(new Projectiles(r.x, r.y + 22, 10, 10));
 			om.addObject(new Projectiles(r.x + 10, r.y + 22, 10, 10));
 			om.addObject(new Projectiles(r.x + 20, r.y + 22, 10, 10));
@@ -186,6 +203,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			om.addObject(new Projectiles(r.x + 90, r.y + 22, 10, 10));
 			om.addObject(new Projectiles(r.x + 100, r.y + 22, 10, 10));
 			om.addObject(new Projectiles(r.x + 110, r.y + 22, 10, 10));
+			specialPower = specialPower + 1;
 		}
 	}
 
@@ -199,4 +217,93 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		r.right = false;
 	}
 
+	class Song {
+
+		private int duration;
+		private String songAddress;
+		private AdvancedPlayer mp3Player;
+		private InputStream songStream;
+
+		/**
+		 * Songs can be constructed from files on your computer or Internet
+		 * addresses.
+		 * 
+		 * Examples: <code> 
+		 * 		new Song("everywhere.mp3"); 	//from default package 
+		 * 		new Song("/Users/joonspoon/music/Vampire Weekend - Modern Vampires of the City/03 Step.mp3"); 
+		 * 		new	Song("http://freedownloads.last.fm/download/569264057/Get%2BGot.mp3"); 
+		 * </code>
+		 */
+		public Song(String songAddress) {
+			this.songAddress = songAddress;
+		}
+
+		public void play() {
+			loadFile();
+			if (songStream != null) {
+				loadPlayer();
+				startSong();
+			} else
+				System.err.println("Unable to load file: " + songAddress);
+		}
+
+		public void setDuration(int seconds) {
+			this.duration = seconds * 100;
+		}
+
+		public void stop() {
+			if (mp3Player != null)
+				mp3Player.close();
+		}
+
+		private void startSong() {
+			Thread t = new Thread() {
+				public void run() {
+					try {
+						if (duration > 0)
+							mp3Player.play(duration);
+						else
+							mp3Player.play();
+					} catch (Exception e) {
+						System.out.println("start song fail");
+					}
+				}
+			};
+			t.start();
+		}
+
+		private void loadPlayer() {
+			try {
+				this.mp3Player = new AdvancedPlayer(songStream);
+			} catch (Exception e) {
+				System.out.println("loadPlayer fail");
+			}
+		}
+
+		private void loadFile() {
+			if (songAddress.contains("http"))
+				this.songStream = loadStreamFromInternet();
+			else
+				this.songStream = loadStreamFromComputer();
+		}
+
+		private InputStream loadStreamFromInternet() {
+			try {
+				return new URL(songAddress).openStream();
+			} catch (Exception e) {
+				System.out.println("loadStreamfromInternet");
+				return null;
+
+			}
+		}
+
+		private InputStream loadStreamFromComputer() {
+			try {
+				return new FileInputStream(songAddress);
+			} catch (FileNotFoundException e) {
+				System.out.println("should be called- loadStreamFromComputer");
+				return this.getClass().getResourceAsStream(songAddress);
+			}
+		}
+	}
 }

@@ -151,6 +151,7 @@ class Song {
 					else
 						mp3Player.play();
 				} catch (Exception e) {
+					System.out.println("start song fail");
 				}
 			}
 		};
@@ -161,6 +162,7 @@ class Song {
 		try {
 			this.mp3Player = new AdvancedPlayer(songStream);
 		} catch (Exception e) {
+			System.out.println("loadPlayer fail");
 		}
 	}
 
@@ -175,7 +177,9 @@ class Song {
 		try {
 			return new URL(songAddress).openStream();
 		} catch (Exception e) {
+			System.out.println("loadStreamfromInternet");
 			return null;
+			
 		}
 	}
 
@@ -183,6 +187,7 @@ class Song {
 		try {
 			return new FileInputStream(songAddress);
 		} catch (FileNotFoundException e) {
+			System.out.println("should be called- loadStreamFromComputer");
 			return this.getClass().getResourceAsStream(songAddress);
 		}
 	}
