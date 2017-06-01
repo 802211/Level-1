@@ -103,6 +103,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(instructions);
 		g.setColor(Color.WHITE);
 		g.drawString("Press d to fire to make game easier", 50, 500);
+		g.setColor(Color.WHITE);
+		g.setFont(instructions);
+		g.drawString("Game will become harder as you keep dying.", 0, 600);
+		g.setFont(instructions);
 	}
 
 	void drawGameState(Graphics g) {
